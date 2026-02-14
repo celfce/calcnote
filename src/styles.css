@@ -1,0 +1,466 @@
+/* 记事本计算器 - 样式 */
+
+:root {
+  --font-mono: "Cascadia Code", "Fira Code", "JetBrains Mono", "Source Code Pro", Consolas, "Courier New", monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+/* 浅色主题 */
+[data-theme="light"] {
+  --bg: #f8f9fa;
+  --bg-editor: #ffffff;
+  --bg-toolbar: #ffffff;
+  --bg-gutter: #f0f1f3;
+  --text: #24292e;
+  --text-secondary: #6a737d;
+  --text-gutter: #959da5;
+  --text-result: #0366d6;
+  --text-changed: #e36209;
+  --text-error: #cb2431;
+  --bg-result-row: rgba(46, 160, 67, 0.08);
+  --bg-active-row: rgba(255, 166, 0, 0.12);
+  --border: #e1e4e8;
+  --border-focus: #0366d6;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --bg-editor: #161b22;
+  --bg-toolbar: #161b22;
+  --bg-gutter: #1c2128;
+  --text: #c9d1d9;
+  --text-secondary: #8b949e;
+  --text-gutter: #484f58;
+  --text-result: #58a6ff;
+  --text-changed: #f0883e;
+  --text-error: #f85149;
+  --bg-result-row: rgba(63, 185, 80, 0.1);
+  --bg-active-row: rgba(255, 166, 0, 0.15);
+  --border: #30363d;
+  --border-focus: #58a6ff;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部 */
+.header {
+  text-align: center;
+  padding: 10px 20px 6px;
+  flex-shrink: 0;
+}
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+/* 工具栏 */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px 8px;
+  flex-shrink: 0;
+}
+
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  background: var(--bg-toolbar);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toolbar button:hover {
+  color: var(--text);
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow);
+}
+
+/* 编辑器容器 */
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 0;
+}
+
+/* 页签栏 */
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab-active {
+  color: var(--text);
+  background: var(--bg-editor);
+  border-bottom-color: var(--bg-editor);
+}
+
+.tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.tab-close {
+  font-size: 15px;
+  line-height: 1;
+  padding: 0 2px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tab:hover .tab-close { opacity: 0.6; }
+
+.tab-close:hover {
+  opacity: 1 !important;
+  background: rgba(255, 0, 0, 0.15);
+  color: var(--text-error);
+}
+
+.tab-add {
+  padding: 5px 10px;
+  font-size: 18px;
+  font-weight: 300;
+  background: transparent;
+  border-color: transparent;
+}
+
+.tab-add:hover {
+  background: var(--bg-gutter);
+  border-color: var(--border);
+}
+
+.tab-rename {
+  width: 80px;
+  font-size: 12px;
+  padding: 1px 4px;
+  border: 1px solid var(--border-focus);
+  border-radius: 3px;
+  outline: none;
+  font-family: var(--font-sans);
+  background: var(--bg-editor);
+  color: var(--text);
+}
+
+.editor-wrapper {
+  flex: 1;
+  display: flex;
+  background: var(--bg-editor);
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* 行线：用 box-shadow 不影响布局高度，确保滚动同步 */
+.line-numbers span,
+#outputArea div {
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
+/* 行号 */
+.line-numbers {
+  width: 44px;
+  flex-shrink: 0;
+  background: var(--bg-gutter);
+  border-right: 1px solid var(--border);
+  padding: 10px 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.line-numbers span {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-gutter);
+}
+
+/* 输入区 */
+.input-panel {
+  flex: 7;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#inputArea {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text);
+  background: transparent;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 21px,
+    var(--border) 21px,
+    var(--border) 22px
+  );
+  background-attachment: local;
+  background-origin: content-box;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  tab-size: 2;
+}
+
+#inputArea::placeholder {
+  color: var(--text-gutter);
+}
+
+/* 结果区 */
+.output-panel {
+  flex: 3;
+  min-width: 0;
+  border-left: 1px solid var(--border);
+  background: var(--bg-gutter);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#outputArea {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+#outputArea div {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 22px;
+  text-align: right;
+  color: var(--text-result);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: text;
+}
+
+.result-popup {
+  position: fixed;
+  z-index: 1000;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  user-select: text;
+  cursor: text;
+  max-width: 90vw;
+  word-break: break-all;
+}
+
+#outputArea div.has-result {
+  background: var(--bg-result-row);
+  user-select: text;
+}
+
+/* 光标所在行橙色高亮 */
+.line-numbers span.active-line {
+  background: var(--bg-active-row);
+  color: var(--text);
+}
+
+#outputArea div.active-line {
+  background: var(--bg-active-row);
+}
+
+#outputArea div.changed {
+  color: var(--text-changed);
+  animation: flash 0.4s ease;
+}
+
+#outputArea div.error {
+  color: var(--text-error);
+  opacity: 0.7;
+}
+
+@keyframes flash {
+  0% { background: rgba(227, 98, 9, 0.15); }
+  100% { background: transparent; }
+}
+
+
+/* 页脚 */
+.footer {
+  text-align: center;
+  padding: 4px 20px;
+  font-size: 11px;
+  color: var(--text-gutter);
+  flex-shrink: 0;
+}
+
+/* 触控设备：关闭按钮始终可见，增大点击区域 */
+@media (hover: none) {
+  .tab-close {
+    opacity: 0.5;
+    padding: 2px 6px;
+    font-size: 16px;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .header {
+    padding: 8px 16px 4px;
+  }
+
+  .header h1 {
+    font-size: 17px;
+  }
+
+  .header p {
+    font-size: 12px;
+    margin-top: 0;
+  }
+
+  .toolbar {
+    padding: 0 8px 6px;
+    gap: 4px;
+  }
+
+  .toolbar button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .editor-container {
+    padding: 0 6px;
+  }
+
+  .tab {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 34px;
+  }
+
+  .tab-title {
+    max-width: 70px;
+  }
+
+  .tab-add {
+    min-height: 34px;
+    font-size: 16px;
+  }
+
+  .line-numbers {
+    width: 28px;
+  }
+
+  .line-numbers span {
+    font-size: 11px;
+    padding: 0 4px 0 0;
+  }
+
+  #inputArea {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  #outputArea {
+    padding: 10px 6px;
+  }
+
+  #outputArea div {
+    font-size: 12px;
+  }
+
+  .input-panel {
+    flex: 6;
+  }
+
+  .output-panel {
+    flex: 4;
+  }
+
+  .footer {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}

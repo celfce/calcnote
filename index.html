@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="记事本计算器 - 随手记录，即时计算。在文本中混合书写和数学表达式，右侧实时显示计算结果。" />
+  <title>记事本计算器</title>
+</head>
+<body>
+  <header class="header">
+    <h1>记事本计算器</h1>
+    <p>随手记录，即时计算</p>
+  </header>
+
+  <nav class="toolbar">
+    <button id="btnTheme">🌙 深色</button>
+    <button id="btnClear">🗑️ 清空</button>
+    <button id="btnExport">📥 导出</button>
+  </nav>
+
+  <main class="editor-container">
+    <div id="tabBar" class="tab-bar"></div>
+    <div class="editor-wrapper">
+      <div id="lineNumbers" class="line-numbers"></div>
+      <div class="input-panel">
+<textarea id="inputArea" placeholder="输入计算表达式..." spellcheck="false"></textarea>
+      </div>
+      <div class="output-panel">
+        <div id="outputArea"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    记事本计算器 · 支持变量、数学函数、百分比
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
